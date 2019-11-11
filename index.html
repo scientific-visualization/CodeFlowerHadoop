@@ -41,12 +41,18 @@ line.link {
   <body>
     <div class="content">
       <div class="container">
-        <h1>CodeFlower Source code visualization SAGRES-WEB</h1>
-        <p class="lead">This experiment visualizes source repositories using an interactive tree. Each disc represents a file, with a radius proportional to the number of lines of code (loc). All rendering is done client-side, in JavaScript. Try hovering on nodes to see the loc number, clicking on directory nodes to fold them, dragging nodes to rearrange the layout, and changing project to see different tree structures. Built with <a href="https://github.com/mbostock/d3">d3.js</a>. Inspired by <a href="https://code.google.com/p/codeswarm/">Code Swarm</a> and <a href="https://code.google.com/p/gource/">Gource</a>.</p>
+        <h1>CodeFlower Source code visualization Hadoop Release 3.2.1 LOC</h1>
+        <p class="lead">This experiment visualizes source repositories using an interactive tree. 
+          Each disc represents a file, with a radius proportional to the number of lines of code (loc). 
+          All rendering is done client-side, in JavaScript. 
+          Try hovering on nodes to see the loc number, clicking on directory nodes to fold them, 
+          dragging nodes to rearrange the layout, and changing project to see different tree structures.
+        </p>
         <form class="form-inline">
           <fieldset>
           <label>Example projects from GitHub:</label>
           <select id="project">
+            <option value="data/hadoop_sc_release_3_2_1.json">Hadoop Release 3.2.1</option>
             <option value="data/sagres.json">sagres-web / sagres </option>
             <option value="data/SAGRES-WEB-refactoring.json">Sagres Web Refatorado / 1o Rafactoring do Sagres </option> 
           </select>
