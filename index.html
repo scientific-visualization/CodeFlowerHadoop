@@ -15,22 +15,18 @@ circle.node {
   stroke: #000;
   stroke-width: .5px;
 }
-
 circle.node.directory {
   stroke: #9ecae1;
   stroke-width: 2px;
 }
-
 circle.node.collapsed {
   stroke: #555;
 }
-
 .nodetext {
   fill: #252929;
   font-weight: bold;
   text-shadow: 0 0 0.2em white;
 }
-
 line.link {
   fill: none;
   stroke: #9ecae1;
@@ -59,6 +55,74 @@ line.link {
           </fieldset>
         </form>
         <div id="visualization"></div>
+        <h2>Purpose</h2>
+        <ul class="unstyled">
+          <li>Did you ever dive into an existing project and wish you could have a bird's eye view of the whole code?</li>
+          <li>Did you ever have to refactor a large application and wish you knew where to start?</li>
+          <li>Did you ever look for a visualization that would help you communicate visually with your teammates about a repository?</li>
+        </ul>
+        <p>CodeFlowers tries to answer these needs. Also, it tries to make code look beautiful, but that's another story.</p>
+        <h2>Usage</h2>
+        <p>To create a CodeFlower, include the <code>CodeFlower.js</code> file together with <code>d3.js</code>,
+          just like in this page. Create a new CodeFlower instance using a CSS selector
+          (of the div where the flower should be inserted), and the width and height of the desired visualization.
+          Then, bind JSON data to the flower using <code>CodeFlower.update()</code>, and you're done.</p>
+        <pre>
+var myFlower = new CodeFlower("#visualization", 1920, 1080);
+myflower.update(jsonData);
+        </pre>
+        <h2>Input data format</h2>
+        <p>The <code>jsonData</code> format taken as input to <code>update()</code> is extremely simple.
+           It's a JavaScript object representing a file tree structure.
+           Each node must have a <code>name</code> (the file or directory name),
+           leaf nodes must have a <code>size</code> (the number of lines of code or the file),
+           and directory nodes must have a <code>children</code> property containing an array of nodes.
+          As an example, here is the input for the currently displayed CodeFlower.
+          You can modify it at will and click the update button to see the effect of your changes on the CodeFlower.</p>
+        <form id="jsonInput">
+        <fieldset>
+          <textarea id="jsonData"></textarea>
+          <div class="pull-right">
+            <button type="submit" class="btn btn-primary btn-large">Update</button>
+          </div>
+        </fieldset>
+        </form>
+        <h2>Generating JSON for a project</h2>
+        <p>It's easy to generate loc metrics for any project, whatever the language.
+          You can use <code>wc</code>, but this method requires cleaning the output and counts comments and blanks
+          together with actual lines of code. Alternatively,
+          you can use <code>cloc</code> (<a href="http://cloc.sourceforge.net/">http://cloc.sourceforge.net/</a>),
+          which is open-source and makes the difference between real source code and comments.
+          Here are three examples using <a href="http://github.com">GitHub</a> as a source.</p>
+        <pre>
+
+# Using curl and cloc (fast, accurate)
+$ curl https://nodeload.github.com/symfony/symfony/tar.gz/master | tar xvz
+$ cloc symfony-master --csv --by-file --report-file=symfony.cloc
+
+# Using git clone and cloc (slow, accurate)
+$ git clone git://github.com/symfony/symfony.git
+$ cloc symfony --csv --by-file --report-file=symfony.cloc
+
+# Using git clone and wc (slow, inaccurate)
+$ git clone git://github.com/symfony/symfony.git
+$ cd symfony
+$ git ls-files | xargs wc -l > symfony.wc
+        </pre>
+        <p>Once you have a loc metrics file, paste its content below and click on the convert button.
+          This will update the CodeFlower and the JSON textarea, to let you save data for your own CodeFlowers.</p>
+        <form id="jsonConverter">
+        <fieldset>
+          <select name="origin">
+            <option value="cloc" selected>Origin: cloc</option>
+            <option value="ws">Origin: wc</option>
+          </select>
+          <textarea id="metricsData"></textarea>
+          <div class="pull-right">
+            <button type="submit" class="btn btn-primary btn-large">Convert</button>
+          </div>
+        </fieldset>
+        </form>
 
       </div>
     </div>
@@ -81,9 +145,7 @@ line.link {
         // create a new CodeFlower
         currentCodeFlower = new CodeFlower("#visualization", w, h).update(json);
       };
-
       d3.json('data.json', createCodeFlower);
-
       document.getElementById('project').addEventListener('change', function() {
         d3.json(this.value, createCodeFlower);
       });
@@ -103,17 +165,14 @@ line.link {
       });
     </script>
     <script type="text/javascript">
-
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-26354577-2']);
   _gaq.push(['_trackPageview']);
-
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
-
     </script>
   </body>
 </html>
